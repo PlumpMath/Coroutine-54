@@ -56,7 +56,19 @@ public class CubeScript : MonoBehaviour
         }
 
         yield return StartCoroutine(MoveObject(Camera.main.transform, originalPoisiton, 2));
+
+        foreach (BallScript ball in BallScript.allBalls.ToArray())
+        {
+            if (ball != null)
+                yield return StartCoroutine(MoveObject(ball.transform, transform.position, 2));
+        }
+
         yield return WaitForRealSeconds(2.0f);
+
+        foreach (BallScript ball in BallScript.allBalls.ToArray())
+        {
+            Destroy(ball.gameObject);
+        }
 
         Time.timeScale = 1;
         _runningSequence = false;
