@@ -5,14 +5,14 @@ public class CubeScript : MonoBehaviour
 {
     public Transform ball_;
     private bool _runningSequence;
-    // Use this for initialization
+
     private IEnumerator Start()
     {
         while (true)
         {
             Transform newBall = Instantiate(ball_, transform.position, Quaternion.identity) as Transform;
             newBall.rigidbody.AddForce(new Vector3(Random.value * 2000 - 1000, 2000, Random.value * 2000 - 1000));
-            yield return new WaitForSeconds(1 + Random.value * 2);
+            yield return new WaitForSeconds(1 + Random.value * 2); // Time.timeScale 값에 의해서 작동 영향을 받는다.
         }
     }
 
@@ -50,17 +50,17 @@ public class CubeScript : MonoBehaviour
 
         foreach (BallScript ball in BallScript.allBalls.ToArray())
         {
-            Vector3 targetPosition = ball.transform.position - (Vector3.forward * 3);
-            yield return StartCoroutine(MoveObject(Camera.main.transform, targetPosition, 2));
+            Vector3 targetPosition = ball.transform.position - (Vector3.forward * 3.0f);
+            yield return StartCoroutine(MoveObject(Camera.main.transform, targetPosition, 2.0f)); // 코루틴안에서 또 코루틴을 실행시키며,
             yield return WaitForRealSeconds(0.5f);
         }
 
-        yield return StartCoroutine(MoveObject(Camera.main.transform, originalPoisiton, 2));
+        yield return StartCoroutine(MoveObject(Camera.main.transform, originalPoisiton, 2.0f));
 
         foreach (BallScript ball in BallScript.allBalls.ToArray())
         {
             if (ball != null)
-                yield return StartCoroutine(MoveObject(ball.transform, transform.position, 2));
+                yield return StartCoroutine(MoveObject(ball.transform, transform.position, 2.0f));
         }
 
         yield return WaitForRealSeconds(2.0f);
